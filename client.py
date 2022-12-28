@@ -26,19 +26,24 @@ class Client():
     def run_game(self):
         """Start the main loop for the game."""
         while True:
-            # Watch for keyboard and mouse events.
-            for event in pygame.event.get():
-                if event.type == pygame.QUIT:
-                    sys.exit()
+            self._check_events()
+            self._update_screen()  
 
-            # Redraw the screen during each pass through the loop 
-            self.screen.fill(self.settings.BACKGROUND_COLOR)
-            self.ball.blitme()  
+    def _check_events(self):
+        """Respond to keypresses and mouse events."""
+        # Watch for keyboard and mouse events.
+        for event in pygame.event.get():
+            if event.type == pygame.QUIT:
+                sys.exit()
 
-            # Make most recently drawn screen visible
-            pygame.display.update()
+    def _update_screen(self):
+        """Update images on teh screen, and flip to the new screen."""
+        # Redraw the screen during each pass through the loop 
+        self.screen.fill(self.settings.BACKGROUND_COLOR)
+        self.ball.blitme()
 
-
+        # Make most recently drawn screen visible; like animation
+        pygame.display.flip()
 
 if __name__ == '__main__':
     # Make game instance and run the game.
