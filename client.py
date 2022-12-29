@@ -23,11 +23,17 @@ class Client():
         self.LIGHT_GRAY = (230, 230, 230)
         self.BACKGROUND_COLOR = (self.LIGHT_GRAY)
 
+        # Clock
+        self.clock = pygame.time.Clock()
+        self.FPS = 60
+
     def run_game(self):
         """Start the main loop for the game."""
         while True:
             self._check_events()
+            self.ball.update()
             self._update_screen()  
+            self.clock.tick(self.FPS)
 
     def _check_events(self):
         """Respond to keypresses and mouse events."""
