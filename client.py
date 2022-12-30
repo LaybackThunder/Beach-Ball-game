@@ -31,7 +31,10 @@ class Client():
         """Start the main loop for the game."""
         while True:
             self._check_events()
+
             self.ball.update()
+            self._check_wall_collition()
+
             self._update_screen()  
             self.clock.tick(self.FPS)
 
@@ -41,7 +44,11 @@ class Client():
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 sys.exit()
-
+            
+            #if event.type == pygame.MOUSEBUTTONDOWN:
+                #mouse_pos = pygame.mouse.get_pos()
+                #self.check_click_ball(mouse_pos)
+        
     def _update_screen(self):
         """Update images on teh screen, and flip to the new screen."""
         # Redraw the screen during each pass through the loop 
@@ -50,6 +57,23 @@ class Client():
 
         # Make most recently drawn screen visible; like animation
         pygame.display.flip()
+
+    def check_click_ball(self, mouse_pos):
+        #"""Change ball direction when clicked."""
+        #if self.ball.rect.collidepoint(mouse_pos):
+            # change ball direction
+            # LEEEEEEEEEEEFT ooooff make method that chnages direction PAGE 241
+            #self.ball.change_ball_direction()
+            pass
+
+    def _check_wall_collition(self):
+        """Ball bounces if it hits the walls or floor or ceiling."""
+        # Walls
+        if self.ball.rect.left <= 0 or self.ball.rect.right >= self.settings.SCREEN_WIDTH:
+            self.ball.change_ball_x_direction()
+        # Floor and ceiling
+        if self.ball.rect.top <= 0 or self.ball.rect.bottom >= self.settings.SCREEN_HEIGHT:
+            self.ball.change_ball_y_direction()
 
 if __name__ == '__main__':
     # Make game instance and run the game.

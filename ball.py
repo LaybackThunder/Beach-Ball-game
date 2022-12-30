@@ -18,9 +18,6 @@ class Ball():
         # Starting each new ball in the middle of the screen.
         self.center_the_ball()
 
-        # Movement Flag
-        self.moving = True
-
         # Ball direction
         self.dx = random.choice([-1, 1])
         self.dy = random.choice([-1, 1])
@@ -32,19 +29,26 @@ class Ball():
         # Ball's movement
         self.velocity = [self.x, self.y]
         
-    def update(self): # LEFT OOOOOOOOOOOOOOOOFFFF at page 239!
+    def update(self):
         """Updates object's behavior"""
-        if self.moving:
-            # Speed & Direction = Velocity
-            self.x = self.settings.ball_speed * self.dx
-            self.y = self.settings.ball_speed * self.dy
-            # Give velocity its values
-            self.velocity[0] = self.x 
-            self.velocity[1] = self.y 
-            # Ball's velocity
-            self.rect.x += self.velocity[0]
-            self.rect.y += self.velocity[1]
+        # Speed & Direction = Velocity
+        self.x = self.settings.ball_speed * self.dx
+        self.y = self.settings.ball_speed * self.dy
+        # Give velocity its values
+        self.velocity[0] = self.x 
+        self.velocity[1] = self.y 
+        # Ball's velocity
+        self.rect.x += self.velocity[0]
+        self.rect.y += self.velocity[1]
         
+    def change_ball_x_direction(self):
+        """Changes ball's x direction."""
+        self.dx *= -1
+
+    def change_ball_y_direction(self):
+        """Change the ball's y direction."""
+        self.dy *= -1
+
     def center_the_ball(self):
         """Centers the ball in the middle."""
         MIDDLE_OF_THE_SCREEN = self.screen_rect.center # Screen Coordinates
