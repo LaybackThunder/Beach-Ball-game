@@ -13,3 +13,7 @@ class Settings():
         self.STARTING_BALL_SPEED = 5
         self.ball_speed = self.STARTING_BALL_SPEED
         self.ball_acceleration = 0.5
+
+        # Player lives
+        self.STARTING_LIVES = 1
+        self.lives = self.STARTING_LIVES

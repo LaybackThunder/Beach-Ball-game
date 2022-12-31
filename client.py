@@ -62,16 +62,23 @@ class Client():
                 sys.exit()
 
     def _check_click_ball(self, mouse_pos):
-        """Change ball direction when clicked."""
+        """Change ball direction when ball gets clicked, 
+        click out side the ball and player gets damaged."""
         if self.ball.rect.collidepoint(mouse_pos):
             # change ball x and y directions
             self.ball.change_ball_x_direction()
             self.ball.change_ball_y_direction()
             self.ball_acceleration()
+        else:
+            self.player_damage()
     
     def ball_acceleration(self):
         """Add acceleration to ball."""
         self.settings.ball_speed += self.settings.ball_acceleration
+
+    def player_damage(self):
+        """Inflict one damage to player's life count."""
+        self.settings.lives -= 1
 
     def _check_collition(self):
         """Ball bounces if it hits the walls or floor or ceiling."""
