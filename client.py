@@ -1,7 +1,8 @@
-import pygame, sys
+import pygame, sys, time
 
 from settings import Settings
 from ball import Ball
+from game_stats import GameStats
 
 class Client():
     """Overall class to manage game assets and behavior."""
@@ -10,6 +11,7 @@ class Client():
         """Initialize the game, and create game resources."""
         pygame.init() # Instantiate pygame modules
         self.settings = Settings() # Instance Settings
+        
 
         # Pygame screen
         self.screen = pygame.display.set_mode(
@@ -17,6 +19,7 @@ class Client():
         pygame.display.set_caption('Beach Ball') # Add string to top of game's window
 
         # Instanciate objects
+        self.game_stats = GameStats(self)
         self.ball = Ball(self)
 
         # Clock
@@ -72,13 +75,30 @@ class Client():
         """Change ball direction when ball gets clicked, 
         click out side the ball and player gets damaged."""
         if self.ball.rect.collidepoint(mouse_pos):
+            self._ball_got_clicked()
+        else:
+            self.player_damage()
+            self._is_game_over()
+
+    def _is_game_over(self):
+        """Checks if its game over."""
+        # If player lives = 0 reset stats
+        if self.game_stats.lives_left <= 0:
+            self._reset_game()
+            
+    def _reset_game(self):
+        """Reset stats and ball vlocity."""
+        self.game_stats.reset_stats()
+        self.reset_ball_velocity()
+        self.ball.center_the_ball()
+        time.sleep(2.0)
+
+    def _ball_got_clicked(self):
             # change ball x and y directions
             self.ball.change_ball_x_direction()
             self.ball.change_ball_y_direction()
             self.ball_acceleration()
             self.score()
-        else:
-            self.player_damage()
 
     def _update_screen(self):
         """Update images on teh screen, and flip to the new screen."""
@@ -96,12 +116,16 @@ class Client():
 
     def player_damage(self):
         """Inflict one damage to player's life count."""
-        self.settings.lives -= 1
+        self.game_stats.lives_left -= 1
 
     def score(self):
         """Give player one point."""
-        self.settings.score += 1
-        print(self.settings.score)
+        self.game_stats.score += 1
+        print(self.game_stats.score)
+
+    def reset_ball_velocity(self):
+        """Reset ball velocity."""
+        self.settings.ball_speed = self.settings.STARTING_BALL_SPEED
 
 
 
