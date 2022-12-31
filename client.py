@@ -19,10 +19,6 @@ class Client():
         # Instanciate objects
         self.ball = Ball(self)
 
-        # Colors and background color
-        self.LIGHT_GRAY = (230, 230, 230)
-        self.BACKGROUND_COLOR = (self.LIGHT_GRAY)
-
         # Clock
         self.clock = pygame.time.Clock()
         self.FPS = 60
@@ -55,9 +51,15 @@ class Client():
 
     def _check_buttondown_events(self, event):
         """Checks all button down events."""
+        # Check if click was on ball
         if event.type == pygame.MOUSEBUTTONDOWN:
             mouse_pos = pygame.mouse.get_pos()
             self._check_click_ball(mouse_pos)
+        
+        # Quit game when pressing the "q" key
+        if event.type == pygame.KEYDOWN:
+            if event.key == pygame.K_q:
+                sys.exit()
 
     def _check_click_ball(self, mouse_pos):
         """Change ball direction when clicked."""
@@ -66,7 +68,7 @@ class Client():
             self.ball.change_ball_x_direction()
             self.ball.change_ball_y_direction()
 
-    def _check_wall_collition(self):
+    def _check_collition(self):
         """Ball bounces if it hits the walls or floor or ceiling."""
         # Walls
         if self.ball.rect.left <= 0 or self.ball.rect.right >= self.settings.SCREEN_WIDTH:
@@ -78,9 +80,11 @@ class Client():
     def _check_ball_update(self):
         """Check for ball update and its collitions."""
         self.ball.update()
-        self._check_wall_collition()
+        self._check_collition()
 
 if __name__ == '__main__':
     # Make game instance and run the game.
     client = Client()
     client.run_game()
+
+    # ADD quit key - leeft ooofff page 244
