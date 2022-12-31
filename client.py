@@ -5,7 +5,7 @@ from ball import Ball
 
 class Client():
     """Overall class to manage game assets and behavior."""
-
+    
     def __init__(self):
         """Initialize the game, and create game resources."""
         pygame.init() # Instantiate pygame modules
@@ -23,6 +23,7 @@ class Client():
         self.clock = pygame.time.Clock()
         self.FPS = 60
 
+    # Run game method
     def run_game(self):
         """Start the main loop for the game."""
         while True:
@@ -31,6 +32,7 @@ class Client():
             self._update_screen()  
             self.clock.tick(self.FPS)
 
+    # Helper methods 
     def _check_events(self):
         """Respond to keypresses and mouse events."""
         # Watch for keyboard and mouse events.
@@ -39,15 +41,6 @@ class Client():
                 sys.exit()
             
             self._check_buttondown_events(event)
-
-    def _update_screen(self):
-        """Update images on teh screen, and flip to the new screen."""
-        # Redraw the screen during each pass through the loop 
-        self.screen.fill(self.settings.BACKGROUND_COLOR)
-        self.ball.blitme()
-
-        # Make most recently drawn screen visible; like animation
-        pygame.display.flip()
 
     def _check_buttondown_events(self, event):
         """Checks all button down events."""
@@ -61,6 +54,20 @@ class Client():
             if event.key == pygame.K_q:
                 sys.exit()
 
+    def _check_ball_update(self):
+        """Check for ball update and its collitions."""
+        self.ball.update()
+        self._check_collition()
+
+    def _check_collition(self):
+        """Ball bounces if it hits the walls or floor or ceiling."""
+        # Walls
+        if self.ball.rect.left <= 0 or self.ball.rect.right >= self.settings.SCREEN_WIDTH:
+            self.ball.change_ball_x_direction()
+        # Floor and ceiling
+        if self.ball.rect.top <= 0 or self.ball.rect.bottom >= self.settings.SCREEN_HEIGHT:
+            self.ball.change_ball_y_direction()
+
     def _check_click_ball(self, mouse_pos):
         """Change ball direction when ball gets clicked, 
         click out side the ball and player gets damaged."""
@@ -72,7 +79,17 @@ class Client():
             self.score()
         else:
             self.player_damage()
+
+    def _update_screen(self):
+        """Update images on teh screen, and flip to the new screen."""
+        # Redraw the screen during each pass through the loop 
+        self.screen.fill(self.settings.BACKGROUND_COLOR)
+        self.ball.blitme()
+
+        # Make most recently drawn screen visible; like animation
+        pygame.display.flip()
     
+    # Methods
     def ball_acceleration(self):
         """Add acceleration to ball."""
         self.settings.ball_speed += self.settings.ball_acceleration
@@ -86,19 +103,6 @@ class Client():
         self.settings.score += 1
         print(self.settings.score)
 
-    def _check_collition(self):
-        """Ball bounces if it hits the walls or floor or ceiling."""
-        # Walls
-        if self.ball.rect.left <= 0 or self.ball.rect.right >= self.settings.SCREEN_WIDTH:
-            self.ball.change_ball_x_direction()
-        # Floor and ceiling
-        if self.ball.rect.top <= 0 or self.ball.rect.bottom >= self.settings.SCREEN_HEIGHT:
-            self.ball.change_ball_y_direction()
-
-    def _check_ball_update(self):
-        """Check for ball update and its collitions."""
-        self.ball.update()
-        self._check_collition()
 
 
 
