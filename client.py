@@ -67,6 +67,11 @@ class Client():
             # change ball x and y directions
             self.ball.change_ball_x_direction()
             self.ball.change_ball_y_direction()
+            self.ball_acceleration()
+    
+    def ball_acceleration(self):
+        """Add acceleration to ball."""
+        self.settings.ball_speed += self.settings.ball_acceleration
 
     def _check_collition(self):
         """Ball bounces if it hits the walls or floor or ceiling."""
