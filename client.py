@@ -69,6 +69,7 @@ class Client():
             self.ball.change_ball_x_direction()
             self.ball.change_ball_y_direction()
             self.ball_acceleration()
+            self.score()
         else:
             self.player_damage()
     
@@ -79,6 +80,11 @@ class Client():
     def player_damage(self):
         """Inflict one damage to player's life count."""
         self.settings.lives -= 1
+
+    def score(self):
+        """Give player one point."""
+        self.settings.score += 1
+        print(self.settings.score)
 
     def _check_collition(self):
         """Ball bounces if it hits the walls or floor or ceiling."""
@@ -94,9 +100,9 @@ class Client():
         self.ball.update()
         self._check_collition()
 
+
+
 if __name__ == '__main__':
     # Make game instance and run the game.
     client = Client()
     client.run_game()
-
-    # ADD quit key - leeft ooofff page 244

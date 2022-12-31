@@ -17,3 +17,7 @@ class Settings():
         # Player lives
         self.STARTING_LIVES = 1
         self.lives = self.STARTING_LIVES
+
+        # Score
+        self.STARTING_SCORE = 0
+        self.score = self.STARTING_SCORE
