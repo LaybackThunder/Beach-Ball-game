@@ -5,7 +5,7 @@ from ball import Ball
 
 class Client():
     """Overall class to manage game assets and behavior."""
-    
+
     def __init__(self):
         """Initialize the game, and create game resources."""
         pygame.init() # Instantiate pygame modules
@@ -102,7 +102,6 @@ class Client():
         """Give player one point."""
         self.settings.score += 1
         print(self.settings.score)
-
 
 
 
