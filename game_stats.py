@@ -5,7 +5,7 @@ class GameStats():
         """Initialize statistics."""
         self.settings = client.settings
         self.reset_stats()
-        self.active_game = True
+        self.active_game = False
 
     def reset_stats(self):
         """Initialize statistics that chnage during the game."""

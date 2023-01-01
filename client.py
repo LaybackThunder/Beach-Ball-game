@@ -3,6 +3,7 @@ import pygame, sys, time
 from settings import Settings
 from ball import Ball
 from game_stats import GameStats
+from button import Button
 
 class Client():
     """Overall class to manage game assets and behavior."""
@@ -19,8 +20,9 @@ class Client():
         pygame.display.set_caption('Beach Ball') # Add string to top of game's window
 
         # Instanciate objects
-        self.game_stats = GameStats(self)
-        self.ball = Ball(self)
+        self.game_stats = GameStats(self) # Acess stats
+        self.play_button = Button(self, "Play") # Make play button
+        self.ball = Ball(self) # Craete a beach ball
 
         # Clock
         self.clock = pygame.time.Clock()
@@ -31,7 +33,7 @@ class Client():
         """Start the main loop for the game."""
         while True:
             self._check_events()
-            
+
             if self.game_stats.active_game:
                 self._check_ball_update()
 
@@ -53,12 +55,20 @@ class Client():
         # Check if click was on ball
         if event.type == pygame.MOUSEBUTTONDOWN:
             mouse_pos = pygame.mouse.get_pos()
+            self._check_play_button(mouse_pos)
             self._check_click_ball(mouse_pos)
         
         # Quit game when pressing the "q" key
         if event.type == pygame.KEYDOWN:
             if event.key == pygame.K_q:
                 sys.exit()
+
+    def _check_play_button(self, mouse_pos):
+        """Start new game when the player clicks Play."""
+        if self.play_button.rect.collidepoint(mouse_pos):
+            self._reset_game() # Reset stats: lives, score
+            self.game_stats.active_game = True # Turn the game logic on
+            
 
     def _check_ball_update(self):
         """Check for ball update and its collitions."""
@@ -87,18 +97,18 @@ class Client():
         """Checks if its game over."""
         if self.game_stats.lives_left <= 0:
             self.game_stats.active_game = False # turn game logic off
-            self._reset_game() # Reset stats: lives, score
             self.game_over() # Display game over graphics
             
     def game_over(self):
         """Game over graphics."""
+        print("Game Over!")
 
     def _reset_game(self):
         """Reset stats and ball vlocity."""
         self.game_stats.reset_stats()
         self.reset_ball_velocity()
         self.ball.center_the_ball()
-        time.sleep(2.0)
+        
 
     def _ball_got_clicked(self):
             # change ball x and y directions
@@ -113,6 +123,9 @@ class Client():
         self.screen.fill(self.settings.BACKGROUND_COLOR)
         self.ball.blitme()
 
+        if not self.game_stats.active_game:
+            self.play_button.draw_button() # Draw play button
+
         # Make most recently drawn screen visible; like animation
         pygame.display.flip()
     
@@ -124,6 +137,7 @@ class Client():
     def player_damage(self):
         """Inflict one damage to player's life count."""
         self.game_stats.lives_left -= 1
+        time.sleep(2.0)
 
     def score(self):
         """Give player one point."""
