@@ -31,7 +31,10 @@ class Client():
         """Start the main loop for the game."""
         while True:
             self._check_events()
-            self._check_ball_update()
+            
+            if self.game_stats.active_game:
+                self._check_ball_update()
+
             self._update_screen()  
             self.clock.tick(self.FPS)
 
@@ -74,18 +77,22 @@ class Client():
     def _check_click_ball(self, mouse_pos):
         """Change ball direction when ball gets clicked, 
         click out side the ball and player gets damaged."""
-        if self.ball.rect.collidepoint(mouse_pos):
-            self._ball_got_clicked()
+        if self.ball.rect.collidepoint(mouse_pos): 
+            self._ball_got_clicked() # Get points
         else:
-            self.player_damage()
-            self._is_game_over()
+            self.player_damage() # Damage player
+            self._is_game_over() # Check for game over
 
     def _is_game_over(self):
         """Checks if its game over."""
-        # If player lives = 0 reset stats
         if self.game_stats.lives_left <= 0:
-            self._reset_game()
+            self.game_stats.active_game = False # turn game logic off
+            self._reset_game() # Reset stats: lives, score
+            self.game_over() # Display game over graphics
             
+    def game_over(self):
+        """Game over graphics."""
+
     def _reset_game(self):
         """Reset stats and ball vlocity."""
         self.game_stats.reset_stats()
