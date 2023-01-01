@@ -69,7 +69,6 @@ class Client():
             self._reset_game() # Reset stats: lives, score
             self.game_stats.active_game = True # Turn the game logic on
             
-
     def _check_ball_update(self):
         """Check for ball update and its collitions."""
         self.ball.update()
@@ -98,10 +97,6 @@ class Client():
         if self.game_stats.lives_left <= 0:
             self.game_stats.active_game = False # turn game logic off
             self.game_over() # Display game over graphics
-            
-    def game_over(self):
-        """Game over graphics."""
-        print("Game Over!")
 
     def _reset_game(self):
         """Reset stats and ball vlocity."""
@@ -109,7 +104,6 @@ class Client():
         self.reset_ball_velocity()
         self.ball.center_the_ball()
         
-
     def _ball_got_clicked(self):
             # change ball x and y directions
             self.ball.change_ball_x_direction()
@@ -130,11 +124,15 @@ class Client():
         pygame.display.flip()
     
     # Methods
+    def game_over(self):
+        """Game over graphics."""
+        print("Game Over!")
+
     def ball_acceleration(self):
         """Add acceleration to ball."""
         self.settings.ball_speed += self.settings.ball_acceleration
 
-    def player_damage(self):
+    def player_damage(self): 
         """Inflict one damage to player's life count."""
         self.game_stats.lives_left -= 1
         time.sleep(2.0)
