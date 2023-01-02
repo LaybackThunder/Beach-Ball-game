@@ -59,14 +59,13 @@ class Client():
             if event.key == pygame.K_q:
                 sys.exit()
 
-        # Check if click was on ball
         if event.type == pygame.MOUSEBUTTONDOWN:
             mouse_pos = pygame.mouse.get_pos()
-
-            if self.play_button.play_button_hide:
+            # Check if click was on ball
+            if self.play_button.play_button_hide: 
                 self._check_click_ball(mouse_pos)
-            
-            if not self.play_button.play_button_hide:
+            # Check if click was on play button
+            if not self.play_button.play_button_hide: 
                 self._check_play_button(mouse_pos)
             
     def _check_play_button(self, mouse_pos):
