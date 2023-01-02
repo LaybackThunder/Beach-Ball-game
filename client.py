@@ -13,7 +13,6 @@ class Client():
         pygame.init() # Instantiate pygame modules
         self.settings = Settings() # Instance Settings
         
-
         # Pygame screen
         self.screen = pygame.display.set_mode(
             (self.settings.SCREEN_WIDTH, self.settings.SCREEN_HEIGHT))
@@ -32,13 +31,13 @@ class Client():
     def run_game(self):
         """Start the main loop for the game."""
         while True:
-            self._check_events()
+            self._check_events() # Keyboard & mouse events
 
-            if self.game_stats.active_game:
+            if self.game_stats.active_game: # Game logic
                 self._check_ball_update()
 
-            self._update_screen()  
-            self.clock.tick(self.FPS)
+            self._update_screen() # Graphical game projections
+            self.clock.tick(self.FPS) # Controls how was the game processes
 
     # Helper methods 
     def _check_events(self):
@@ -108,7 +107,9 @@ class Client():
             # change ball x and y directions
             self.ball.change_ball_x_direction()
             self.ball.change_ball_y_direction()
+            # Accelerate the ball
             self.ball_acceleration()
+            # Playe gained one point
             self.score()
 
     def _update_screen(self):
@@ -128,10 +129,6 @@ class Client():
         """Game over graphics."""
         print("Game Over!")
 
-    def ball_acceleration(self):
-        """Add acceleration to ball."""
-        self.settings.ball_speed += self.settings.ball_acceleration
-
     def player_damage(self): 
         """Inflict one damage to player's life count."""
         self.game_stats.lives_left -= 1
@@ -145,6 +142,10 @@ class Client():
     def reset_ball_velocity(self):
         """Reset ball velocity."""
         self.settings.ball_speed = self.settings.STARTING_BALL_SPEED
+
+    def ball_acceleration(self):
+        """Add acceleration to ball."""
+        self.settings.ball_speed += self.settings.ball_acceleration
 
 
 
