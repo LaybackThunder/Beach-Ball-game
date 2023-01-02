@@ -122,14 +122,17 @@ class Client():
     def _update_screen(self):
         """Update images on teh screen, and flip to the new screen."""
         # Redraw the screen during each pass through the loop 
-        self.screen.fill(self.settings.BACKGROUND_COLOR)
-        # Display score
-        self.hud.show_score() 
+        self.screen.fill(self.settings.BACKGROUND_COLOR) 
+
         # Draw beach ball
         self.ball.blitme()
+        # Check for Play button
         if not self.game_stats.active_game:
             self.play_button.play_button_hide = False # Button not hidden
             self.play_button.draw_button() # Draw play button
+        
+        # Display score
+        self.hud._show_hud()
              
         # Make most recently drawn screen visible; like animation
         pygame.display.flip()
