@@ -4,6 +4,7 @@ from settings import Settings
 from ball import Ball
 from game_stats import GameStats
 from button import Button
+from hud import HUD
 
 class Client():
     """Overall class to manage game assets and behavior."""
@@ -17,9 +18,11 @@ class Client():
         self.screen = pygame.display.set_mode(
             (self.settings.SCREEN_WIDTH, self.settings.SCREEN_HEIGHT))
         pygame.display.set_caption('Beach Ball') # Add string to top of game's window
+        self.screen_rect = self.screen.get_rect()
 
         # Instanciate objects
         self.game_stats = GameStats(self) # Acess stats
+        self.hud = HUD(self)
         self.play_button = Button(self, "Play") # Make play button
         self.ball = Ball(self) # Craete a beach ball
 
@@ -51,22 +54,27 @@ class Client():
 
     def _check_buttondown_events(self, event):
         """Checks all button down events."""
-        # Check if click was on ball
-        if event.type == pygame.MOUSEBUTTONDOWN:
-            mouse_pos = pygame.mouse.get_pos()
-            self._check_play_button(mouse_pos)
-            self._check_click_ball(mouse_pos)
-        
         # Quit game when pressing the "q" key
         if event.type == pygame.KEYDOWN:
             if event.key == pygame.K_q:
                 sys.exit()
 
+        # Check if click was on ball
+        if event.type == pygame.MOUSEBUTTONDOWN:
+            mouse_pos = pygame.mouse.get_pos()
+
+            if self.play_button.play_button_hide:
+                self._check_click_ball(mouse_pos)
+            
+            if not self.play_button.play_button_hide:
+                self._check_play_button(mouse_pos)
+            
     def _check_play_button(self, mouse_pos):
         """Start new game when the player clicks Play."""
         if self.play_button.rect.collidepoint(mouse_pos):
             self._reset_game() # Reset stats: lives, score
-            self.game_stats.active_game = True # Turn the game logic on
+            self.game_stats.active_game = True # Turn the game logic on  
+            self.play_button.play_button_hide = True
             
     def _check_ball_update(self):
         """Check for ball update and its collitions."""
@@ -91,6 +99,15 @@ class Client():
             self.player_damage() # Damage player
             self._is_game_over() # Check for game over
 
+    def _ball_got_clicked(self):
+            # change ball x and y directions
+            self.ball.change_ball_x_direction()
+            self.ball.change_ball_y_direction()
+            # Accelerate the ball
+            self.ball_acceleration()
+            # Playe gained one point
+            self.score()
+
     def _is_game_over(self):
         """Checks if its game over."""
         if self.game_stats.lives_left <= 0:
@@ -103,24 +120,18 @@ class Client():
         self.reset_ball_velocity()
         self.ball.center_the_ball()
         
-    def _ball_got_clicked(self):
-            # change ball x and y directions
-            self.ball.change_ball_x_direction()
-            self.ball.change_ball_y_direction()
-            # Accelerate the ball
-            self.ball_acceleration()
-            # Playe gained one point
-            self.score()
-
     def _update_screen(self):
         """Update images on teh screen, and flip to the new screen."""
         # Redraw the screen during each pass through the loop 
         self.screen.fill(self.settings.BACKGROUND_COLOR)
+        # Display score
+        self.hud.show_score() 
+        # Draw beach ball
         self.ball.blitme()
-
         if not self.game_stats.active_game:
+            self.play_button.play_button_hide = False # Button not hidden
             self.play_button.draw_button() # Draw play button
-
+             
         # Make most recently drawn screen visible; like animation
         pygame.display.flip()
     
@@ -132,7 +143,8 @@ class Client():
     def player_damage(self): 
         """Inflict one damage to player's life count."""
         self.game_stats.lives_left -= 1
-        time.sleep(2.0)
+        print('hit')
+        time.sleep(1.5)
 
     def score(self):
         """Give player one point."""

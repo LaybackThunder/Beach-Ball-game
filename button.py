@@ -1,11 +1,13 @@
 import pygame
 
+from settings import Settings
+
 class Button():
 
     def __init__(self, client, msg):
         """Initialize button attributes."""
         self.screen = client.screen
-        self.screen_rect = self.screen.get_rect()
+        self.settings = Settings()
 
         # Set the dimentions and properties of the button.
         self.width, self.height = 200, 50
@@ -15,7 +17,11 @@ class Button():
 
         # Bild the button's rect object and center it.
         self.rect = pygame.Rect(0, 0, self.width, self.height)
-        self.rect.center = self.screen_rect.center
+        self.rect.centerx = self.settings.SCREEN_WIDTH//2
+        self.rect.centery = self.settings.SCREEN_HEIGHT//2
+
+        # Identify if the button is visible
+        self.play_button_hide = False
 
         # The button message needs to be prepped only once.
         self._prep_msg(msg)

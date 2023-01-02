@@ -20,7 +20,7 @@ class HUD():
     def prep_score(self):
         """Turn the score into a rendered image."""
         self.score_text = self.font.render(f"Score: {self.game_stats.score}", 
-        True, self.text_color, (0, 0, 0))
+        True, self.text_color, (255, 234, 0))
         
         # Display the score at the top right of the screen.
         self.score_rect = self.score_text.get_rect()
@@ -29,4 +29,6 @@ class HUD():
     
     def show_score(self):
         """Draw score to the screen."""
+        self.score_text = self.font.render(f"Score: {self.game_stats.score}", 
+        True, self.text_color, (255, 234, 0))
         self.screen.blit(self.score_text, self.score_rect)
