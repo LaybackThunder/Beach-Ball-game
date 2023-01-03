@@ -36,11 +36,11 @@ class Client():
         while True:
             self._check_events() # Keyboard & mouse events
 
-            if self.game_stats.active_game: # Game logic
+            if self.game_stats.active_game: # Game behaviour
                 self._check_ball_update()
 
-            self._update_screen() # Graphical game projections
-            self.clock.tick(self.FPS) # Controls how was the game processes
+            self._update_screen() # Game Graphical Projections
+            self.clock.tick(self.FPS) # Controls how fast the game processes
 
     # Helper methods 
     def _check_events(self):
@@ -124,6 +124,8 @@ class Client():
         # Redraw the screen during each pass through the loop 
         self.screen.fill(self.settings.BACKGROUND_COLOR) 
 
+        self.title_screen()
+
         # Draw beach ball
         self.ball.blitme()
         # Check for Play button
@@ -161,6 +163,20 @@ class Client():
         """Add acceleration to ball."""
         self.settings.ball_speed += self.settings.ball_acceleration
 
+    def title_screen(self):
+        """Display title screen."""
+        # Create Title display attributes
+        if not self.game_stats.active_game and self.game_stats.lives_left == self.settings.lives:
+            text_color = (30, 30, 30)
+            bg_color = (255, 234, 0)
+            font = pygame.font.Font("catch_the_ball\BeachVibesPersonalUse-L3Ggg.otf", 70) # Create font
+            title_text = font.render(f"Beach Ball!", True, text_color, bg_color)
+            title_rect = title_text.get_rect()
+            title_rect.centerx = self.settings.SCREEN_WIDTH//2
+            title_rect.y = self.settings.SCREEN_HEIGHT//2 - 100
+
+            # Display title screen
+            self.screen.blit(title_text, title_rect)
 
 
 if __name__ == '__main__':
