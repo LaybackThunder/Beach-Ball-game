@@ -15,6 +15,9 @@ class HUD():
         self.text_bg_color = (255, 234, 0)
         self.font = pygame.font.SysFont(None, 48)
 
+        # Display HUD on screen
+        self.display_hud = False
+
         # Prepare the initial score image.
         self.prep_score()
         self.prep_lives()
