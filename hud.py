@@ -13,7 +13,7 @@ class HUD():
         # Font settings for scoring information.
         self.text_color = (30, 30, 30)
         self.text_bg_color = (255, 234, 0)
-        self.font = pygame.font.SysFont(None, 48)
+        self.font = pygame.font.Font("catch_the_ball\BeachOcean-MVGOw.otf", 48)
 
         # Display HUD on screen
         self.display_hud = False

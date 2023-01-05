@@ -26,6 +26,12 @@ class Client():
         self.play_button = Button(self, "Click & Play") # Make play button
         self.ball = Ball(self) # Craete a beach ball
 
+        # Game over hide
+        self.display_game_over = False
+
+        # Init font
+        self.font_address = "catch_the_ball\BeachOcean-MVGOw.otf"
+
         # Clock
         self.clock = pygame.time.Clock()
         self.FPS = 60
@@ -75,6 +81,7 @@ class Client():
             self.game_stats.active_game = True # Turn the game logic on  
             self.play_button.play_button_hide = True
             self.hud.display_hud = True
+            self.display_game_over = False
             
     def _check_ball_update(self):
         """Check for ball update and its collitions."""
@@ -111,9 +118,23 @@ class Client():
     def _is_game_over(self):
         """Checks if its game over."""
         if self.game_stats.lives_left <= 0:
-            self.game_stats.active_game = False # turn game logic off
-            self._game_over() # Display game over graphics
+            self.display_game_over = True
 
+    def _game_over(self):
+        """Display game over and rep_prompt player and ask player if they want to play again"""
+        TEXT_COLOR = (30, 30, 30)
+        BG_COLOR = (255, 234, 0)
+        font = pygame.font.Font(self.font_address, 48)
+        game_over_text = font.render("Game Over", True, TEXT_COLOR, BG_COLOR)
+        game_over_rect = game_over_text.get_rect()
+        game_over_rect.centerx = self.settings.SCREEN_WIDTH//2 # middle of x axis
+        game_over_rect.centery = self.settings.SCREEN_HEIGHT//2 - 100 # above the middle of y axis
+
+        self.game_stats.active_game = False
+        self.hud.display_hud = False
+        self.display_game_over = True
+        self.screen.blit(game_over_text, game_over_rect) # draw game over
+        
     def _reset_game(self):
         """Reset stats and ball vlocity."""
         self.game_stats.reset_stats()
@@ -124,46 +145,30 @@ class Client():
         """Update images on teh screen, and flip to the new screen."""
         # Redraw the screen during each pass through the loop 
         self.screen.fill(self.settings.BACKGROUND_COLOR) 
-
         # Title screen
         self.title_screen()
-
         # Draw beach ball
         self.ball.blitme()
-
         # Check for Play button
         if not self.game_stats.active_game:
             self.play_button.play_button_hide = False # Button not hidden
             self.play_button.draw_button() # Draw play button
-        
         # Display score
         if self.hud.display_hud:
             self.hud._show_hud()
+        
+        if self.display_game_over:
+            self._game_over()
+            self.blit_high_score() # draw high score
              
         # Make most recently drawn screen visible; like animation
         pygame.display.flip()
     
     # Methods
-    def _game_over(self):
-        """Display game over and rep_prompt player and ask player if they want to play again"""
-        TEXT_COLOR = (30, 30, 30)
-        BG_COLOR = (255, 234, 0)
-        font = pygame.font.Font("catch_the_ball\BeachVibesPersonalUse-L3Ggg.otf", 48)
-        game_over_text = font.render("Game over", True, TEXT_COLOR, BG_COLOR)
-        game_over_rect = game_over_text.get_rect()
-        game_over_rect.centerx = self.settings.SCREEN_WIDTH//2 # middle of x axis
-        game_over_rect.centery = self.settings.SCREEN_HEIGHT//2 - 150 # above the middle of y axis
-
-        if self.game_stats.lives_left <= 0:
-            self.game_stats.active_game = False
-            self.hud.display_hud = False
-            self.screen.blit(game_over_text, game_over_rect) # draw game over
-            self.blit_high_score() # draw high score
-
+    
     def player_damage(self): 
         """Inflict one damage to player's life count."""
         self.game_stats.lives_left -= 1
-        print('hit')
         time.sleep(1.5)
 
     def score(self):
@@ -185,7 +190,7 @@ class Client():
         if not self.game_stats.active_game and self.game_stats.lives_left == self.settings.lives:
             text_color = (30, 30, 30)
             bg_color = (255, 234, 0)
-            font = pygame.font.Font("catch_the_ball\BeachVibesPersonalUse-L3Ggg.otf", 70) # Create font
+            font = pygame.font.Font(self.font_address, 70) # Create font
             title_text = font.render(f"Beach Ball!", True, text_color, bg_color)
             title_rect = title_text.get_rect()
             title_rect.centerx = self.settings.SCREEN_WIDTH//2
@@ -201,7 +206,7 @@ class Client():
 
         TEXT_COLOR = (30, 30, 30)
         BG_COLOR = (255, 234, 0)
-        font = pygame.font.Font("catch_the_ball\BeachVibesPersonalUse-L3Ggg.otf", 48)
+        font = pygame.font.Font(self.font_address, 28)
 
         high_score_text = font.render(f'High Score: {self.game_stats.high_score}', True, TEXT_COLOR, BG_COLOR)
         high_score_rect = high_score_text.get_rect()
@@ -219,7 +224,7 @@ if __name__ == '__main__':
     client.run_game()
 
 
-    """0) Test git-hub 
+    """0) Test git-hub
        2) Fix game over.
        3) Fix whatever may come lol.
        """
