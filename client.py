@@ -74,6 +74,7 @@ class Client():
             self._reset_game() # Reset stats: lives, score
             self.game_stats.active_game = True # Turn the game logic on  
             self.play_button.play_button_hide = True
+            self.hud.display_hud = True
             
     def _check_ball_update(self):
         """Check for ball update and its collitions."""
@@ -124,10 +125,12 @@ class Client():
         # Redraw the screen during each pass through the loop 
         self.screen.fill(self.settings.BACKGROUND_COLOR) 
 
+        # Title screen
         self.title_screen()
 
         # Draw beach ball
         self.ball.blitme()
+
         # Check for Play button
         if not self.game_stats.active_game:
             self.play_button.play_button_hide = False # Button not hidden
@@ -203,8 +206,8 @@ class Client():
         high_score_text = font.render(f'High Score: {self.game_stats.high_score}', True, TEXT_COLOR, BG_COLOR)
         high_score_rect = high_score_text.get_rect()
         # Location o# To blit on displayn display
-        high_score_rect.centerx = self.settings.screen_width//2
-        high_score_rect.y = self.settings.screen_height//2 + 50
+        high_score_rect.centerx = self.settings.SCREEN_WIDTH//2
+        high_score_rect.y = self.settings.SCREEN_HEIGHT//2 + 50
 
         self.screen.blit(high_score_text, high_score_rect)
 
@@ -216,8 +219,7 @@ if __name__ == '__main__':
     client.run_game()
 
 
-    """0) Test git-hub
-       1) Fix hud not appearing after clicking play, 
+    """0) Test git-hub 
        2) Fix game over.
        3) Fix whatever may come lol.
        """
