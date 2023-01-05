@@ -15,7 +15,7 @@ class Settings():
         self.ball_acceleration = 0.5
 
         # Player lives
-        self.STARTING_LIVES = 1
+        self.STARTING_LIVES = 3
         self.lives = self.STARTING_LIVES
 
         # Score
