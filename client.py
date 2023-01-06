@@ -238,9 +238,3 @@ if __name__ == '__main__':
     # Make game instance and run the game.
     client = Client()
     client.run_game()
-
-
-    """0) Test git-hub
-       2) Fix game over.
-       3) Fix whatever may come lol.
-       """
