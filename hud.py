@@ -21,6 +21,7 @@ class HUD():
         # Prepare the initial score image.
         self.prep_score()
         self.prep_lives()
+        self.prep_wall_counter()
     
     def prep_score(self):
         """Turn the score into a rendered image."""
@@ -54,7 +55,24 @@ class HUD():
         True, self.text_color, self.text_bg_color)
         self.screen.blit(self.lives_left_text, self.lives_left_rect)
 
+    def prep_wall_counter(self):
+        """Turn the lives into a rendered image."""
+        self.wall_counter_text = self.font.render(f"Counter: {self.game_stats.counter}", 
+        True, self.text_color, self.text_bg_color)
+            
+        # Display the counter at the top right of the screen.
+        self.wall_counter_rect = self.wall_counter_text.get_rect()
+        self.wall_counter_rect.midtop = self.screen_rect.midtop
+        self.wall_counter_rect.top = 20
+    
+    def show_wall_counter(self):
+        """Draw score to the screen."""
+        self.wall_counter_text = self.font.render(f"Counter: {self.game_stats.counter}", 
+        True, self.text_color, self.text_bg_color)
+        self.screen.blit(self.wall_counter_text, self.wall_counter_rect)
+
     def _show_hud(self):
         """Display hud elements on screen."""
         self.show_score()
         self.show_lives_left()
+        self.show_wall_counter()

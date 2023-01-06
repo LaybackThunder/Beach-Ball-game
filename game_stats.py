@@ -7,6 +7,7 @@ class GameStats():
         self.reset_stats()
         self.active_game = False
         self.high_score = self.score
+        self.counter = 0
 
     def reset_stats(self):
         """Initialize statistics that chnage during the game."""
@@ -17,3 +18,13 @@ class GameStats():
         """Check If high score is greater than old highscore: set if True"""
         if self.score > self.high_score:
             self.high_score = self.score
+
+    def wall_counter(self):
+        """Detects how many times ball hits the walls of the game."""
+        self.counter += 1
+        print(self.counter)
+    
+    def reset_counter(self):
+        """Reset wall counter"""
+        self.counter = 0
+        print('reset counter')
