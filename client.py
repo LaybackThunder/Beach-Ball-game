@@ -32,6 +32,10 @@ class Client():
         # Init font
         self.font_address = "catch_the_ball\BeachOcean-MVGOw.otf"
 
+        # Create background image
+        self.bg_image = pygame.image.load('catch_the_ball\landscape-with-ocean-composition-sand.bmp')
+        self.bg_rect = self.bg_image.get_rect()
+
         # Clock
         self.clock = pygame.time.Clock()
         self.FPS = 60
@@ -155,7 +159,8 @@ class Client():
     def _update_screen(self):
         """Update images on teh screen, and flip to the new screen."""
         # Redraw the screen during each pass through the loop 
-        self.screen.fill(self.settings.BACKGROUND_COLOR) 
+        #self.screen.fill(self.settings.BACKGROUND_COLOR) 
+        self.screen.blit(self.bg_image, self.bg_rect)
         # Title screen
         self.title_screen()
         # Draw beach ball
