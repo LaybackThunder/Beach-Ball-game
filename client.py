@@ -29,6 +29,9 @@ class Client():
         # Game over hide
         self.display_game_over = False
 
+        # Wall counter
+        self.counter = 0
+
         # Init font
         self.font_address = "catch_the_ball\BeachOcean-MVGOw.otf"
 
@@ -93,10 +96,21 @@ class Client():
         # Walls
         if self.ball.rect.left <= 0 or self.ball.rect.right >= self.settings.SCREEN_WIDTH:
             self.ball.change_ball_x_direction()
+            self.wall_counter()
+            if self.counter >= 4:
+                self.reset_counter()
+                self.player_damage()
+                self._is_game_over()                
+
         # Floor and ceiling
         if self.ball.rect.top <= 0 or self.ball.rect.bottom >= self.settings.SCREEN_HEIGHT:
             self.ball.change_ball_y_direction()
-
+            self.wall_counter()
+            if self.counter >= 4:
+                self.reset_counter()
+                self.player_damage()
+                self._is_game_over()
+                
     def _check_click_ball(self, mouse_pos):
         """Change ball direction when ball gets clicked, 
         click out side the ball and player gets damaged."""
@@ -216,6 +230,15 @@ class Client():
 
         self.screen.blit(high_score_text, high_score_rect)
 
+    def wall_counter(self):
+        """Detects how many times ball hits the walls of the game."""
+        self.counter += 1
+        print(self.counter)
+    
+    def reset_counter(self):
+        """Reset wall counter"""
+        self.counter = 0
+        print('reset counter')
 
 
 if __name__ == '__main__':
