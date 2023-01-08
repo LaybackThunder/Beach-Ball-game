@@ -117,6 +117,7 @@ class Client():
         click out side the ball and player gets damaged."""
         if self.ball.rect.collidepoint(mouse_pos): 
             self._ball_got_clicked() # Get points
+            self.game_stats.reset_counter()
         else:
             self.player_damage() # Damage player
             self._is_game_over() # Check for game over
